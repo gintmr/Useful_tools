@@ -1,0 +1,17 @@
+_BASE_: "../Base-RCNN-FPN.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  MASK_ON: True
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 64
+    NUM_CLASSES: 801
+SOLVER:
+  CHECKPOINT_PERIOD: 5000  
+INPUT:
+  MASK_FORMAT: RLE
+DATASETS:
+  TRAIN: ("TRAIN", )
+  TEST: ("TEST",)
+OUTPUT_DIR: /your/custom/path
+SOLVER:
+  IMS_PER_BATCH: 4
