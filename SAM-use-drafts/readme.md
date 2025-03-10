@@ -1,0 +1,19 @@
+Please make sure the json file of each image contains such attributes:
+
+1) coords, a numpy array [[point1_x,point1_y],[point2_x,point2_y],...]
+
+2) bbox, [x,y,w,h]
+
+3) segmentation, []
+
+4) area, 0
+
+5) score, 0
+
+##### RLE格式主要用于压缩mask标注，奇数位代表 0 的个数，偶数位代表1的个数
+
+- train.py 训练模型
+
+- generate_croods.py 根据mask随机生成mask内提示点坐标
+
+- use_croods_eval.py 使用bbox/croods作为prompt，生成mask，并计算IoU与pa
