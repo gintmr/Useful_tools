@@ -7,16 +7,20 @@ import pycocotools.mask as mask_utils
 import json
 
 def process_json_files(annotations_directory, coco_annotation_path, num_random_points):
+    # 初始化 COCO API
     coco = COCO(coco_annotation_path)
 
+    # 遍历目录中的所有JSON文件
     for filename in os.listdir(annotations_directory):
         coords = []
         if filename.endswith('.json'):
             file_path = os.path.join(annotations_directory, filename)
             
+            # 读取JSON文件
             with open(file_path, 'r') as f:
                 annotations = json.load(f)
             
+            # 遍历annotations列表
             h = annotations[-1]["height"]
             w = annotations[-1]["width"]
             gt = np.zeros((h, w), dtype=np.uint8)
@@ -33,7 +37,7 @@ def process_json_files(annotations_directory, coco_annotation_path, num_random_p
                 elif annotation["iscrowd"]:
                     has_crowd_flag = 1
                     rle = annotation['segmentation']['counts']
-                    #DDD以下是对乱码形式的rle解析
+                    # ##DDD以下是对乱码形式的rle解析
                     # mask = np.array(mask_utils.decode(rle), dtype=np.float32)
 
                     #ddd以下是对整数形式的rle解析
@@ -51,8 +55,10 @@ def process_json_files(annotations_directory, coco_annotation_path, num_random_p
                     masks.append(mask)
                 visualize_masks_as_binary(masks, annotations_directory + "/" + filename[:-5]+"_binary.png")
                 
+                # 移除背景点（值为0的点）
                 non_background_points = np.argwhere(gt > 0)
                 
+                # 如果存在非背景点，则随机选择 num_random_points 个点
                 if non_background_points.size > 0:
                     print(f"size = {non_background_points.size}")
                     print(f"lenof = {len(non_background_points)}")
