@@ -88,7 +88,7 @@ def process_images_and_annotations(cocoed_anno, image_folder_path, output_image_
     new_anno = {
         "images": new_images,
         "annotations": new_annotations,
-        # "categories": coco.loadCats(coco.getCatIds())
+        "categories": coco.loadCats(coco.getCatIds())
     }
     with open(output_anno_path, 'w') as f:
         json.dump(new_anno, f, indent=4)
